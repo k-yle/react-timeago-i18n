@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "strict": true,
+    "declaration": true,
+    "skipLibCheck": true,
+
+    // this is an esm-only package
+    "module": "node16",
+    "moduleResolution": "node16",
+
+    // es2020 is the oldest that supports Intl.RelativeTimeFormatUnit
+    "target": "es2020",
+    "lib": ["dom", "es2020"]
+  },
+  "include": ["src"]
+}

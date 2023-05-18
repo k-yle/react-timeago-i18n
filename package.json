@@ -1,0 +1,49 @@
+{
+  "name": "react-timeago-i18n",
+  "version": "1.0.0",
+  "author": "Kyle Hensel",
+  "license": "MIT",
+  "description": "📅🌏 A relative time component for react using the browser's native internationalization API",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": "https://github.com/k-yle/react-timeago-i18n",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "react",
+    "timeago",
+    "relative date",
+    "date",
+    "i18n",
+    "intl",
+    "internationalization"
+  ],
+  "scripts": {
+    "build": "tsc && uglifyjs -cmo dist/index.js dist/index.js",
+    "lint": "eslint --ext .js,.ts,.jsx,.tsx --ignore-path .gitignore .",
+    "test": "echo no_tests_yet",
+    "trypublish": "npm publish || true"
+  },
+  "peerDependencies": {
+    "react": "^16.9.0 || ^17.0.0 || ^18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.6",
+    "@types/react-dom": "^18.2.4",
+    "eslint": "^8.40.0",
+    "eslint-config-kyle": "^11.9.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.0.4",
+    "uglify-js": "^3.17.4"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "eslintConfig": {
+    "extends": "kyle"
+  },
+  "prettier": {}
+}
