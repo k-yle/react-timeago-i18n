@@ -1,5 +1,9 @@
 # react-timeago-i18n
 
+[![build](https://github.com/k-yle/react-timeago-i18n/actions/workflows/ci.yml/badge.svg)](https://github.com/k-yle/react-timeago-i18n/actions/workflows/ci.yml)
+[![npm version](https://badge.fury.io/js/react-timeago-i18n.svg)](https://badge.fury.io/js/react-timeago-i18n)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-timeago-i18n)
+
 📅🌏 A tiny relative time component for react, which uses the browser's native [`Intl.RelativeTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) API.
 This means that all languages are supported without bundling translations.
 

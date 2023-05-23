@@ -53,7 +53,7 @@ const TimeAgo = memo<TimeAgoProps>(
       const [value, newUnit] = timeSince(dateObj);
       setText(
         newUnit === "seconds" && hideSeconds
-          ? formatter.format(1, "minute")
+          ? formatter.format(-1, "minute")
           : formatter.format(-value, newUnit)
       );
       setUnit(newUnit);
