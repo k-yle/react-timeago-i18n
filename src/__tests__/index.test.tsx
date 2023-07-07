@@ -21,13 +21,14 @@ describe("TimeAgo", () => {
   });
 
   describe("basic", () => {
+    it.todo("add test case for mi-NZ once we drop support for node 16");
+
     it.each`
       date                      | locale       | output
       ${"2023-06-08"}           | ${"en"}      | ${"0 seconds ago"}
       ${"2023-06-07"}           | ${"en"}      | ${"0 seconds ago"}
       ${"2023-06-06"}           | ${"en"}      | ${"11 hours ago"}
       ${"2019-06-06"}           | ${"en"}      | ${"4 years ago"}
-      ${"2019-06-06"}           | ${"mi-NZ"}   | ${"-4 y"}
       ${"2019-06-06"}           | ${"de-LU"}   | ${"vor 4 Jahren"}
       ${"2023-06-06T11:00:00Z"} | ${"de"}      | ${"vor 0 Sekunden"}
       ${"2023-06-06T10:59:59Z"} | ${"de"}      | ${"vor 1 Sekunde"}
