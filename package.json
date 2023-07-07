@@ -23,21 +23,25 @@
   "scripts": {
     "build": "tsc && uglifyjs -cmo dist/index.js dist/index.js",
     "lint": "eslint --ext .js,.ts,.jsx,.tsx --ignore-path .gitignore .",
-    "test": "echo no_tests_yet",
+    "test": "vitest",
     "trypublish": "npm publish || true"
   },
   "peerDependencies": {
     "react": "^16.9.0 || ^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.6",
-    "@types/react-dom": "^18.2.4",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
     "eslint": "^8.40.0",
     "eslint-config-kyle": "^11.17.1",
+    "jsdom": "^22.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^5.0.4",
-    "uglify-js": "^3.17.4"
+    "typescript": "^5.1.6",
+    "uglify-js": "^3.17.4",
+    "vitest": "^0.32.2"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -46,6 +50,11 @@
     "extends": "kyle",
     "rules": {
       "import/no-extraneous-dependencies": 0
+    },
+    "settings": {
+      "jest": {
+        "version": 29
+      }
     }
   },
   "prettier": {}
