@@ -33,7 +33,7 @@
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4",
     "eslint": "^8.40.0",
-    "eslint-config-kyle": "^11.9.2",
+    "eslint-config-kyle": "^11.17.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.0.4",
@@ -43,7 +43,10 @@
     "node": ">=16.0.0"
   },
   "eslintConfig": {
-    "extends": "kyle"
+    "extends": "kyle",
+    "rules": {
+      "import/no-extraneous-dependencies": 0
+    }
   },
   "prettier": {}
 }

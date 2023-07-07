@@ -48,9 +48,9 @@ const TimeAgo = memo<TimeAgoProps>(
     );
 
     const doUpdate = useCallback(() => {
-      const dateObj = date instanceof Date ? date : new Date(date);
+      const dateObject = date instanceof Date ? date : new Date(date);
 
-      const [value, newUnit] = timeSince(dateObj);
+      const [value, newUnit] = timeSince(dateObject);
       setText(
         newUnit === "seconds" && hideSeconds
           ? formatter.format(-1, "minute")
