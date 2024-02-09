@@ -33,3 +33,4 @@ import TimeAgo from "react-timeago-i18n";
 | `formatOptions` | [options for `Intl.RelativeTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat#basic_format_usage) | `undefined`          |
 | `hideSeconds`   | If `true`, values smaller than 1 minute will shown as "1 minute" instead of frequently updating seconds.                                                             | `false`              |
 | `roundStrategy` | By default, values are `floor`ed (e.g. 11.9 months becomes "1 year"). If this is not desired, the rounding strategy can be changed to `round`.                       | `"floor"`            |
+| `timeElement`   | By default, the result is wrapped in `<time title="..."> ... </time>`, unless you set this property to `false`                                                       | `true`               |

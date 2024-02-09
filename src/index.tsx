@@ -46,6 +46,14 @@ export type TimeAgoProps = {
    * strategy can be changed to `round` or even `ceil`.
    */
   roundStrategy?: RoundStrategy;
+  /**
+   * by default, the result is wrapped in an
+   * {@link HTMLTimeElement} (`<time>`), with the `title`
+   * attribute set to {@link Date.toLocaleString}. If
+   * `timeElement` is set to `false`, then the text is
+   * returned with no `<time>` element.
+   */
+  timeElement?: boolean;
 };
 
 const TimeAgo = memo<TimeAgoProps>(
@@ -55,6 +63,7 @@ const TimeAgo = memo<TimeAgoProps>(
     formatOptions,
     hideSeconds,
     roundStrategy,
+    timeElement = true,
   }) => {
     const [text, setText] = useState("");
     const [unit, setUnit] = useState<Unit>();
@@ -70,9 +79,12 @@ const TimeAgo = memo<TimeAgoProps>(
       [locale, formatOptions]
     );
 
-    const doUpdate = useCallback(() => {
-      const dateObject = date instanceof Date ? date : new Date(date);
+    const dateObject = useMemo(
+      () => (date instanceof Date ? date : new Date(date)),
+      [date]
+    );
 
+    const doUpdate = useCallback(() => {
       const [value, newUnit] = timeSince(dateObject, roundStrategy);
       setText(
         newUnit === "seconds" && hideSeconds
@@ -83,7 +95,7 @@ const TimeAgo = memo<TimeAgoProps>(
       // setUnit is auto-batched with the previous setState,
       // in react 18+, and auto-aborted if this would be a
       // no-op in all react versions.
-    }, [date, formatter, hideSeconds, roundStrategy]);
+    }, [dateObject, formatter, hideSeconds, roundStrategy]);
 
     useEffect(doUpdate, [doUpdate]);
 
@@ -96,8 +108,17 @@ const TimeAgo = memo<TimeAgoProps>(
       return () => clearInterval(intervalId);
     }, [unit, doUpdate]);
 
-    // avoid using a JSX fragment to keep things simple
-    return text;
+    return timeElement ? (
+      <time
+        title={dateObject.toLocaleString(locale)}
+        dateTime={dateObject.toISOString()}
+      >
+        {text}
+      </time>
+    ) : (
+      // avoid using a JSX fragment to keep things simple
+      text
+    );
   }
 );
 TimeAgo.displayName = "TimeAgo";

@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { assert, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import TimeAgo, { TimeAgoProps } from "../index.js";
@@ -107,6 +107,27 @@ describe("TimeAgo", () => {
             roundStrategy: "ceil",
           })
         ).toHaveTextContent(output);
+      }
+    );
+  });
+
+  describe("time element", () => {
+    it.each`
+      date            | locale     | tooltip         | isoDate
+      ${"2023-02-06"} | ${"en-US"} | ${"2/6/2023, "} | ${"2023-02-06T00:00:00.000Z"}
+      ${"2019-02-06"} | ${"de"}    | ${"6.2.2019, "} | ${"2019-02-06T00:00:00.000Z"}
+    `(
+      "renders a tooltip for $date in $locale",
+      ({ date, locale, tooltip, isoDate }) => {
+        const element = setup({
+          date,
+          hideSeconds: true,
+          locale,
+        }).querySelector("time");
+
+        assert(element instanceof HTMLTimeElement);
+        expect(element.title).toContain(tooltip);
+        expect(element.dateTime).toBe(isoDate);
       }
     );
   });
