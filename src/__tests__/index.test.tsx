@@ -37,12 +37,12 @@ describe("TimeAgo", () => {
       ${"2023-06-06T10:00:00Z"} | ${"es"}      | ${"hace 1 hora"}
       ${"2023-06-06T10:00:00Z"} | ${"zh-Hant"} | ${"1 小時前"}
       ${"2023-06-06T10:00:00Z"} | ${"zh-Hans"} | ${"1小时前"}
-      ${"1989-09-01"}           | ${"sm"}      | ${"33 years ago" /* lang not supported */}
-      ${"1989-09-01"}           | ${"rrm"}     | ${"33 years ago" /* lang not supported */}
+      ${"1989-09-01"}           | ${"sm"}      | ${"34 years ago" /* lang not supported */}
+      ${"1989-09-01"}           | ${"rrm"}     | ${"34 years ago" /* lang not supported */}
     `(
       "renders $date as $output in $locale",
       async ({ date, locale, output }) => {
-        const div = setup({ date, locale });
+        const div = setup({ date, locale, hideSeconds: false });
 
         expect(div).toHaveTextContent(output);
       }
@@ -91,7 +91,7 @@ describe("TimeAgo", () => {
       ${"2023"}       | ${"hace 1 año"}
       ${"2023-06-01"} | ${"hace 1 año"}
       ${"2023-06-06"} | ${"hace 1 año"}
-      ${"2024"}       | ${"hace 0 segundos"}
+      ${"2024"}       | ${"hace 1 minuto"}
     `(
       "doesn't crash if someone tries to use ceil with $date",
       ({ date, output }) => {

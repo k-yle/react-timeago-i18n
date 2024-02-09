@@ -17,7 +17,7 @@ type RoundStrategy = "floor" | "round";
 
 function timeSince(
   date: Date,
-  roundStrategy: RoundStrategy = "floor"
+  roundStrategy: RoundStrategy
 ): [value: number, unit: Unit] {
   const msAgo = Date.now() - +date;
 
@@ -61,8 +61,8 @@ const TimeAgo = memo<TimeAgoProps>(
     date,
     locale = navigator.language,
     formatOptions,
-    hideSeconds,
-    roundStrategy,
+    hideSeconds = true,
+    roundStrategy = "round",
     timeElement = true,
   }) => {
     const [text, setText] = useState("");
