@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 2.0.0 (2024-02-09)
+
+- 💥 BREAKING CHANGE: Enable `hideSeconds` by default
+- 💥 BREAKING CHANGE: Set `roundStrategy` to `round` by default
+- 💥 BREAKING CHANGE: Wrap output in `<time>...</time>` by default.
+- Add `timeElement` option to determine whether a `<time>` element should be used.
+
 ## 1.1.0 (2023-07-07)
 
 - Add `roundStrategy` option
