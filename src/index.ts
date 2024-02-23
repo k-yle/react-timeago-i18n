@@ -1,7 +1,10 @@
 import {
+  PropsWithChildren,
+  createContext,
   createElement,
   memo,
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useState,
@@ -63,15 +66,34 @@ export type TimeAgoProps = {
   timeElement?: boolean;
 };
 
+export type TimeAgoOptions = Omit<TimeAgoProps, "date">;
+
+const Context = createContext<TimeAgoOptions | undefined>(undefined);
+
+/**
+ * This context provider allows you specify defaults for
+ * all options.
+ */
+export const TimeAgoProvider: React.FC<TimeAgoOptions & PropsWithChildren> = ({
+  children,
+  ...props
+}) => createElement(Context.Provider, { value: props }, children);
+
 const TimeAgo = memo<TimeAgoProps>(
-  ({
-    date,
-    locale = navigator.language,
-    formatOptions,
-    hideSeconds = true,
-    roundStrategy = "round",
-    timeElement = true,
-  }) => {
+  //
+  (props) => {
+    const {
+      date,
+      locale = navigator.language,
+      formatOptions,
+      hideSeconds = true,
+      roundStrategy = "round",
+      timeElement = true,
+    } = {
+      ...useContext(Context),
+      ...props,
+    };
+
     const [text, setText] = useState("");
     const [unit, setUnit] = useState<Unit>();
 

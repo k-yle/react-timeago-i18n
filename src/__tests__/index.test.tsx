@@ -1,7 +1,11 @@
 import { assert, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import TimeAgo, { TimeAgoProps } from "../index.js";
+import TimeAgo, {
+  type TimeAgoOptions,
+  type TimeAgoProps,
+  TimeAgoProvider,
+} from "../index.js";
 
 function setup(props: TimeAgoProps) {
   render(
@@ -130,5 +134,36 @@ describe("TimeAgo", () => {
         expect(element.dateTime).toBe(isoDate);
       }
     );
+  });
+});
+
+describe("TimeAgoProvider", () => {
+  function setupWithProvider(
+    props: TimeAgoProps,
+    providerProps: TimeAgoOptions
+  ) {
+    render(
+      <TimeAgoProvider {...providerProps}>
+        <div role="main">
+          <TimeAgo {...props} />
+        </div>
+      </TimeAgoProvider>
+    );
+    return screen.getByRole("main");
+  }
+
+  it("uses options from the context provider", () => {
+    expect(
+      setupWithProvider({ date: "2023" }, { locale: "ru-Cyrl-RU" })
+    ).toHaveTextContent("5 месяцев назад");
+  });
+
+  it("prefers props over values from the context provider", () => {
+    expect(
+      setupWithProvider(
+        { date: "2023", locale: "it-CH" },
+        { locale: "ru-Cyrl-RU" }
+      )
+    ).toHaveTextContent("5 mesi fa");
   });
 });
