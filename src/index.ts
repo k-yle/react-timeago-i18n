@@ -1,4 +1,11 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  createElement,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 // all JS environments that support the Intl API guarantee
 // deterministic object ordering.
@@ -108,17 +115,16 @@ const TimeAgo = memo<TimeAgoProps>(
       return () => clearInterval(intervalId);
     }, [unit, doUpdate]);
 
-    return timeElement ? (
-      <time
-        title={dateObject.toLocaleString(locale)}
-        dateTime={dateObject.toISOString()}
-      >
-        {text}
-      </time>
-    ) : (
-      // avoid using a JSX fragment to keep things simple
-      text
-    );
+    return timeElement
+      ? createElement(
+          "time",
+          {
+            title: dateObject.toLocaleString(locale),
+            dateTime: dateObject.toISOString(),
+          },
+          text
+        )
+      : text;
   }
 );
 TimeAgo.displayName = "TimeAgo";

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Support old versions of react (pre v16.14)
+
 ## 2.0.0 (2024-02-09)
 
 - 💥 BREAKING CHANGE: Enable `hideSeconds` by default
