@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 2.1.0 (2024-02-23)
+
 - Support old versions of react (pre v16.14)
 - Prefer idiomatic phrasing by default (use `numeric: 'always'` for the old behaviour)
 - Added a context provider to allow default options to be specified

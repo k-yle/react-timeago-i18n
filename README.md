@@ -34,3 +34,19 @@ import TimeAgo from "react-timeago-i18n";
 | `hideSeconds`   | By default, values smaller than 1 minute will shown as "1 minute" instead of frequently updating seconds, unless you set this property to `false`.                   | `true`               |
 | `roundStrategy` | By default, values are `rounded`ed (e.g. 11.9 months becomes "2 years"). If this is not desired, the rounding strategy can be changed to `floor`.                    | `"round"`            |
 | `timeElement`   | By default, the result is wrapped in `<time title="..."> ... </time>`, unless you set this property to `false`                                                       | `true`               |
+
+## Context Provider
+
+Options can be specified as props, or using a context provider.
+
+For example:
+
+```tsx
+import TimeAgo, { TimeAgoProvider } from "react-timeago-i18n";
+
+<TimeAgoProvider locale="zh-Hans" hideSeconds>
+  ...
+  <TimeAgo date="2019-07-16" />
+  ...
+</TimeAgoProvider>;
+```
