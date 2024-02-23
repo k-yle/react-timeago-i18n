@@ -79,7 +79,7 @@ const TimeAgo = memo<TimeAgoProps>(
       () =>
         new Intl.RelativeTimeFormat(locale, {
           localeMatcher: "best fit",
-          numeric: "always",
+          numeric: "auto",
           style: "long",
           ...formatOptions,
         }),

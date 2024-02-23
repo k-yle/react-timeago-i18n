@@ -25,12 +25,12 @@ describe("TimeAgo", () => {
 
     it.each`
       date                      | locale       | output
-      ${"2023-06-08"}           | ${"en"}      | ${"0 seconds ago"}
-      ${"2023-06-07"}           | ${"en"}      | ${"0 seconds ago"}
+      ${"2023-06-08"}           | ${"en"}      | ${"now"}
+      ${"2023-06-07"}           | ${"en"}      | ${"now"}
       ${"2023-06-06"}           | ${"en"}      | ${"11 hours ago"}
       ${"2019-06-06"}           | ${"en"}      | ${"4 years ago"}
       ${"2019-06-06"}           | ${"de-LU"}   | ${"vor 4 Jahren"}
-      ${"2023-06-06T11:00:00Z"} | ${"de"}      | ${"vor 0 Sekunden"}
+      ${"2023-06-06T11:00:00Z"} | ${"de"}      | ${"jetzt"}
       ${"2023-06-06T10:59:59Z"} | ${"de"}      | ${"vor 1 Sekunde"}
       ${"2023-06-06T10:59:58Z"} | ${"de"}      | ${"vor 2 Sekunden"}
       ${"2023-06-06T10:59:00Z"} | ${"fr"}      | ${"il y a 1 minute"}
@@ -71,7 +71,7 @@ describe("TimeAgo", () => {
     it.each`
       date                   | roundStrategy | output
       ${"2022-07-01"}        | ${"floor"}    | ${"vor 11 Monaten"}
-      ${"2022-07-01"}        | ${"round"}    | ${"vor 1 Jahr"}
+      ${"2022-07-01"}        | ${"round"}    | ${"letztes Jahr"}
       ${"2023-06-01"}        | ${"floor"}    | ${"vor 5 Tagen"}
       ${"2023-06-01"}        | ${"round"}    | ${"vor 5 Tagen"}
       ${"2023-06-06T07:00Z"} | ${"floor"}    | ${"vor 4 Stunden"}
@@ -88,9 +88,9 @@ describe("TimeAgo", () => {
     it.each`
       date            | output
       ${"2019"}       | ${"hace 5 año"}
-      ${"2023"}       | ${"hace 1 año"}
-      ${"2023-06-01"} | ${"hace 1 año"}
-      ${"2023-06-06"} | ${"hace 1 año"}
+      ${"2023"}       | ${"el año pasado"}
+      ${"2023-06-01"} | ${"el año pasado"}
+      ${"2023-06-06"} | ${"el año pasado"}
       ${"2024"}       | ${"hace 1 minuto"}
     `(
       "doesn't crash if someone tries to use ceil with $date",
