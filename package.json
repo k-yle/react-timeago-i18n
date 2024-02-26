@@ -45,18 +45,5 @@
   },
   "engines": {
     "node": ">=16.0.0"
-  },
-  "eslintConfig": {
-    "extends": "kyle",
-    "rules": {
-      "import/extensions": 0,
-      "import/no-extraneous-dependencies": 0
-    },
-    "settings": {
-      "jest": {
-        "version": 29
-      }
-    }
-  },
-  "prettier": {}
+  }
 }
