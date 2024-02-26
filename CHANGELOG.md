@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 2.1.1 (2024-02-26)
+
+- Remove internal properties from [package.json](./package.json)
+
 ## 2.1.0 (2024-02-23)
 
 - Support old versions of react (pre v16.14)

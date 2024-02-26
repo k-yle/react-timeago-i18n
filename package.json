@@ -1,6 +1,6 @@
 {
   "name": "react-timeago-i18n",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "author": "Kyle Hensel",
   "license": "MIT",
   "description": "📅🌏 A relative time component for react using the browser's native internationalization API",
