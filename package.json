@@ -24,7 +24,7 @@
     "build": "tsc && uglifyjs -cmo dist/index.js dist/index.js",
     "lint": "eslint --ext .js,.ts,.jsx,.tsx --ignore-path .gitignore .",
     "test": "vitest",
-    "trypublish": "npm publish || true"
+    "trypublish": "npm publish --provenance || true"
   },
   "peerDependencies": {
     "react": "^16.9.0 || ^17.0.0 || ^18.0.0"
