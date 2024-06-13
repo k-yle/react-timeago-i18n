@@ -10,33 +10,38 @@ import {
   useState,
 } from "react";
 
-// all JS environments that support the Intl API guarantee
-// deterministic object ordering.
-const timeUnits = {
-  years: 1000 * 60 * 60 * 24 * 365,
-  months: 1000 * 60 * 60 * 24 * 30,
-  days: 1000 * 60 * 60 * 24,
-  hours: 1000 * 60 * 60,
-  minutes: 1000 * 60,
-  seconds: 1000,
-} satisfies Partial<Record<Intl.RelativeTimeFormatUnit, number>>;
+type Unit = Intl.RelativeTimeFormatUnitSingular;
 
-type Unit = keyof typeof timeUnits;
+const timeUnits: Map<Unit, number> = new Map([
+  ["year", 1000 * 60 * 60 * 24 * 365],
+  ["month", 1000 * 60 * 60 * 24 * 30],
+  ["day", 1000 * 60 * 60 * 24],
+  ["hour", 1000 * 60 * 60],
+  ["minute", 1000 * 60],
+  ["second", 1000],
+]);
 
 type RoundStrategy = "floor" | "round";
 
 function timeSince(
   date: Date,
-  roundStrategy: RoundStrategy
+  roundStrategy: RoundStrategy,
+  allowFuture: boolean
 ): [value: number, unit: Unit] {
   const msAgo = Date.now() - +date;
 
-  for (const [_unit, threshold] of Object.entries(timeUnits)) {
-    const unit = _unit as Unit; // TS is stupid
-    const value = Math[roundStrategy](msAgo / threshold);
-    if (value >= 1) return [value, unit];
+  if (!allowFuture && msAgo < 0) {
+    // If msAgo is negative, the date given is in the future
+    return [0, "second"];
   }
-  return [0, "seconds"];
+
+  for (const [unit, threshold] of timeUnits.entries()) {
+    // Using round strategies on negative numbers has unintuitive results
+    // to negate this, we round the absolute (positive) number and modify the sign of the result
+    const value = Math[roundStrategy](Math.abs(msAgo) / threshold);
+    if (value >= 1) return [value * Math.sign(msAgo), unit];
+  }
+  return [0, "second"];
 }
 
 export type TimeAgoProps = {
@@ -46,10 +51,22 @@ export type TimeAgoProps = {
   /** options for {@link Intl.RelativeTimeFormat} */
   formatOptions?: Intl.RelativeTimeFormatOptions;
   /**
+   * If `true` values in the future will also be
+   * displayed - e.g. "in 3 days"
+   */
+  allowFuture?: boolean;
+  /**
    * If `true`, values smaller than 1 minute will shown as
    * "1 minute" instead of frequently updating seconds.
    */
   hideSeconds?: boolean;
+  /**
+   * If hideSeconds is `true`, values smaller than 1 minute
+   * will display this custom string, instead of "1 minute"
+   *
+   * @example ['just now', 'right now']
+   */
+  hideSecondsText?: [string, string];
   /**
    * By default, values are `floor`ed (e.g. 23.9 months
    * becomes "1 year"). Is this is not desired, the rounding
@@ -71,7 +88,7 @@ export type TimeAgoOptions = Omit<TimeAgoProps, "date">;
 const Context = createContext<TimeAgoOptions | undefined>(undefined);
 
 /**
- * This context provider allows you specify defaults for
+ * This context provider allows you to specify defaults for
  * all options.
  */
 export const TimeAgoProvider: React.FC<TimeAgoOptions & PropsWithChildren> = ({
@@ -86,7 +103,9 @@ const TimeAgo = memo<TimeAgoProps>(
       date,
       locale = navigator.language,
       formatOptions,
+      allowFuture = false,
       hideSeconds = true,
+      hideSecondsText = [],
       roundStrategy = "round",
       timeElement = true,
     } = {
@@ -113,18 +132,33 @@ const TimeAgo = memo<TimeAgoProps>(
       [date]
     );
 
+    const formatDate = useCallback(
+      (value: number, newUnit: Unit): string => {
+        if (!hideSeconds || newUnit !== "second") {
+          return formatter.format(-value, newUnit);
+        }
+
+        const [past, future] = hideSecondsText;
+        if (value < 0) {
+          return future ?? formatter.format(1, "minute");
+        }
+        return past ?? formatter.format(-1, "minute");
+      },
+      [formatter, hideSeconds, hideSecondsText]
+    );
+
     const doUpdate = useCallback(() => {
-      const [value, newUnit] = timeSince(dateObject, roundStrategy);
-      setText(
-        newUnit === "seconds" && hideSeconds
-          ? formatter.format(-1, "minute")
-          : formatter.format(-value, newUnit)
+      const [value, newUnit] = timeSince(
+        dateObject,
+        roundStrategy,
+        allowFuture
       );
+      setText(formatDate(value, newUnit));
       setUnit(newUnit);
       // setUnit is auto-batched with the previous setState,
       // in react 18+, and auto-aborted if this would be a
       // no-op in all react versions.
-    }, [dateObject, formatter, hideSeconds, roundStrategy]);
+    }, [dateObject, roundStrategy, allowFuture, formatDate]);
 
     useEffect(doUpdate, [doUpdate]);
 
@@ -132,7 +166,7 @@ const TimeAgo = memo<TimeAgoProps>(
     useEffect(() => {
       if (!unit) return undefined;
 
-      const intervalMs = timeUnits[unit];
+      const intervalMs = timeUnits.get(unit);
       const intervalId = setInterval(doUpdate, intervalMs);
       return () => clearInterval(intervalId);
     }, [unit, doUpdate]);

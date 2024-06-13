@@ -71,6 +71,90 @@ describe("TimeAgo", () => {
     });
   });
 
+  describe("hideSecondsText", () => {
+    it.each`
+      date                      | output
+      ${"2023-06-08"}           | ${"just now"}
+      ${"2023-06-06T11:01:59Z"} | ${"just now"}
+      ${"2023-06-06T11:01:01Z"} | ${"just now"}
+      ${"2023-06-06T11:00:59Z"} | ${"just now"}
+      ${"2023-06-06T11:00:01Z"} | ${"just now"}
+      ${"2023-06-06T11:00:00Z"} | ${"just now"}
+      ${"2023-06-06T10:59:59Z"} | ${"just now"}
+      ${"2023-06-06T10:59:58Z"} | ${"just now"}
+      ${"2023-06-06T10:59:01Z"} | ${"1 minute ago"}
+      ${"2023-06-06T10:59:00Z"} | ${"1 minute ago"}
+      ${"2023-06-06T10:58:59Z"} | ${"1 minute ago"}
+    `("renders $date as $output", ({ date, output }) => {
+      const div = setup({
+        date,
+        hideSeconds: true,
+        hideSecondsText: ["just now", "right now"],
+      });
+
+      expect(div).toHaveTextContent(output);
+    });
+
+    it.each`
+      date                      | output
+      ${"2023-06-08"}           | ${"in 2 days"}
+      ${"2023-06-06T11:01:59Z"} | ${"in 2 minutes"}
+      ${"2023-06-06T11:01:01Z"} | ${"in 1 minute"}
+      ${"2023-06-06T11:00:59Z"} | ${"in 1 minute"}
+      ${"2023-06-06T11:00:01Z"} | ${"right now"}
+      ${"2023-06-06T11:00:00Z"} | ${"just now"}
+      ${"2023-06-06T10:59:59Z"} | ${"just now"}
+      ${"2023-06-06T10:59:58Z"} | ${"just now"}
+      ${"2023-06-06T10:59:01Z"} | ${"1 minute ago"}
+      ${"2023-06-06T10:59:00Z"} | ${"1 minute ago"}
+      ${"2023-06-06T10:58:59Z"} | ${"1 minute ago"}
+    `(
+      "renders $date as $output if `allowFuture` is true",
+      ({ date, output }) => {
+        const div = setup({
+          date,
+          hideSeconds: true,
+          hideSecondsText: ["just now", "right now"],
+          allowFuture: true,
+        });
+
+        expect(div).toHaveTextContent(output);
+      }
+    );
+  });
+
+  describe("allowFuture", () => {
+    it.each`
+      date                      | output
+      ${"2023-06-06T11:01:00Z"} | ${"in 1 minute"}
+      ${"2023-06-06T11:59:00Z"} | ${"in 1 hour"}
+      ${"2023-06-06T23:00:00Z"} | ${"tomorrow"}
+      ${"2023-07-05"}           | ${"next month"}
+      ${"2027-05-06"}           | ${"in 4 years"}
+    `("renders $date as $output", ({ date, output }) => {
+      const div = setup({ date, allowFuture: true });
+
+      expect(div).toHaveTextContent(output);
+    });
+
+    it.each`
+      date                      | output
+      ${"2023-06-06T11:00:59Z"} | ${"in 1 minute"}
+      ${"2023-06-06T11:01:00Z"} | ${"in 1 minute"}
+      ${"2023-06-06T11:59:00Z"} | ${"in 59 minutes"}
+      ${"2023-06-06T23:00:00Z"} | ${"in 12 hours"}
+      ${"2023-07-05"}           | ${"in 28 days"}
+      ${"2027-05-06"}           | ${"in 3 years"}
+    `(
+      "renders future $date as $output using `roundStrategy` floor",
+      ({ date, output }) => {
+        const div = setup({ date, allowFuture: true, roundStrategy: "floor" });
+
+        expect(div).toHaveTextContent(output);
+      }
+    );
+  });
+
   describe("roundStrategy", () => {
     it.each`
       date                   | roundStrategy | output
@@ -81,7 +165,7 @@ describe("TimeAgo", () => {
       ${"2023-06-06T07:00Z"} | ${"floor"}    | ${"vor 4 Stunden"}
       ${"2023-06-06T07:00Z"} | ${"round"}    | ${"vor 4 Stunden"}
     `(
-      "renders $date as $output using $roundStrategy",
+      "renders $date as $output using `roundStrategy` $roundStrategy",
       async ({ date, roundStrategy, output }) => {
         const div = setup({ date, locale: "de-AT", roundStrategy });
 
