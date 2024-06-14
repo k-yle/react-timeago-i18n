@@ -105,7 +105,7 @@ const TimeAgo = memo<TimeAgoProps>(
       formatOptions,
       allowFuture = false,
       hideSeconds = true,
-      hideSecondsText = [],
+      hideSecondsText: [pastSecondsText, futureSecondsText] = [],
       roundStrategy = "round",
       timeElement = true,
     } = {
@@ -138,13 +138,12 @@ const TimeAgo = memo<TimeAgoProps>(
           return formatter.format(-value, newUnit);
         }
 
-        const [past, future] = hideSecondsText;
         if (value < 0) {
-          return future ?? formatter.format(1, "minute");
+          return futureSecondsText ?? formatter.format(1, "minute");
         }
-        return past ?? formatter.format(-1, "minute");
+        return pastSecondsText ?? formatter.format(-1, "minute");
       },
-      [formatter, hideSeconds, hideSecondsText]
+      [formatter, hideSeconds, pastSecondsText, futureSecondsText]
     );
 
     const doUpdate = useCallback(() => {
