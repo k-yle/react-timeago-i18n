@@ -26,14 +26,16 @@ import TimeAgo from "react-timeago-i18n";
 
 ## Props
 
-| Property        | Description                                                                                                                                                          | Default Value        |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| `date`          | `string` or `Date`                                                                                                                                                   | -                    |
-| `locale`        | the language to use                                                                                                                                                  | `navigator.language` |
-| `formatOptions` | [options for `Intl.RelativeTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat#basic_format_usage) | `undefined`          |
-| `hideSeconds`   | By default, values smaller than 1 minute will shown as "1 minute" instead of frequently updating seconds, unless you set this property to `false`.                   | `true`               |
-| `roundStrategy` | By default, values are `rounded`ed (e.g. 11.9 months becomes "2 years"). If this is not desired, the rounding strategy can be changed to `floor`.                    | `"round"`            |
-| `timeElement`   | By default, the result is wrapped in `<time title="..."> ... </time>`, unless you set this property to `false`                                                       | `true`               |
+| Property          | Description                                                                                                                                                          | Default Value        |
+|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------|
+| `date`            | `string` or `Date`                                                                                                                                                   | -                    |
+| `locale`          | the language to use                                                                                                                                                  | `navigator.language` |
+| `formatOptions`   | [options for `Intl.RelativeTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat#basic_format_usage) | `undefined`          |
+| `allowFuture`     | By default, only dates in the _past_ are supported. If you want to display future dates (i.e. "in 3 days") set this property to `true`                               | `false`              |
+| `hideSeconds`     | By default, values smaller than 1 minute will shown as "1 minute" instead of frequently updating seconds, unless you set this property to `false`.                   | `true`               |
+| `hideSecondsText` | When using `hideSeconds`, seconds are displayed as "1 minute ago" or "in 1 minute", use this property to provide custom strings i.e. `["just now", "right now"]`     | `[]`                 |
+| `roundStrategy`   | By default, values are `round`ed (e.g. 11.9 months becomes "2 years"). If this is not desired, the rounding strategy can be changed to `floor`.                      | `"round"`            |
+| `timeElement`     | By default, the result is wrapped in `<time title="..."> ... </time>`, unless you set this property to `false`                                                       | `true`               |
 
 ## Context Provider
 
