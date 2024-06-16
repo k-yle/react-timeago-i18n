@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 2.2.0 (2024-06-16)
+
+- Added a new option: `allowFuture`, to support dates in the future.
+- Added a new option: `hideSecondsText`, for providing a custom message when `hideSeconds=true`
+- Added react v19 to `peerDependencies`
+
 ## 2.1.1 (2024-02-26)
 
 - Remove internal properties from [package.json](./package.json)
