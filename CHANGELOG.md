@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 2.2.1 (2024-06-19)
+
+- Republish to npm due to EINTEGRITY error
+
 ## 2.2.0 (2024-06-16)
 
 - Added a new option: `allowFuture`, to support dates in the future.
