@@ -224,7 +224,7 @@ describe("TimeAgo", () => {
       expect(screen.getByRole("main")).toHaveTextContent("5 months ago");
 
       // once only - useEffects did not trigger another render
-      expect(ref.current?.renderCount.current).toBe(2); // TODO: reduce by 1
+      expect(ref.current?.renderCount.current).toBe(1);
     });
 
     it("re-renders as time progresses, using minimal re-renders", async () => {
@@ -234,21 +234,21 @@ describe("TimeAgo", () => {
       });
       expect(screen.getByRole("main")).toHaveTextContent("now");
       // only 1 render during the initialisation phase
-      expect(ref.current?.renderCount.current).toBe(2); // TODO: reduce by 1
+      expect(ref.current?.renderCount.current).toBe(1);
 
       // jump forward 1 second
       await vi.advanceTimersByTimeAsync(1000);
 
       expect(screen.getByRole("main")).toHaveTextContent("1 second ago");
       // 1 new render
-      expect(ref.current?.renderCount.current).toBe(3); // TODO: reduce by 1
+      expect(ref.current?.renderCount.current).toBe(2);
 
       // jump forward 5 seconds
       await vi.advanceTimersByTimeAsync(5000);
 
       expect(screen.getByRole("main")).toHaveTextContent("6 seconds ago");
       // 5 new renders
-      expect(ref.current?.renderCount.current).toBe(8); // TODO: reduce by 1
+      expect(ref.current?.renderCount.current).toBe(7);
     });
 
     it("does not re-render if the date is unchanged", async () => {
@@ -258,28 +258,28 @@ describe("TimeAgo", () => {
       });
       expect(screen.getByRole("main")).toHaveTextContent("4 years ago");
       // only 1 render during the initialisation phase
-      expect(ref.current?.renderCount.current).toBe(2); // TODO: reduce by 1
+      expect(ref.current?.renderCount.current).toBe(1);
 
       // jump forward 1 second
       await vi.advanceTimersByTimeAsync(1000);
 
       expect(screen.getByRole("main")).toHaveTextContent("4 years ago");
       // 1 new render, unclear why
-      expect(ref.current?.renderCount.current).toBe(3); // TODO: reduce by 1
+      expect(ref.current?.renderCount.current).toBe(1);
 
       // jump forward 5 seconds
       await vi.advanceTimersByTimeAsync(5000);
 
       expect(screen.getByRole("main")).toHaveTextContent("4 years ago");
       // no new renders
-      expect(ref.current?.renderCount.current).toBe(3); // TODO: reduce by 1
+      expect(ref.current?.renderCount.current).toBe(1);
 
       // jump forward 10 seconds
       await vi.advanceTimersByTimeAsync(10_000);
 
       expect(screen.getByRole("main")).toHaveTextContent("4 years ago");
       // no new renders
-      expect(ref.current?.renderCount.current).toBe(3); // TODO: reduce by 1
+      expect(ref.current?.renderCount.current).toBe(1);
     });
   });
 });

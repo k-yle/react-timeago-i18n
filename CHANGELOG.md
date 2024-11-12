@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Use a TypeScript namespace for all type defintions
+- Performance improvements
 
 ## 2.2.1 (2024-06-19)
 
