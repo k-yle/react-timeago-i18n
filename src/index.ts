@@ -135,9 +135,6 @@ const TimeAgo = memo(
       ...props,
     };
 
-    const [text, setText] = useState("");
-    const [unit, setUnit] = useState<Unit>();
-
     const formatter = useMemo(
       () =>
         new Intl.RelativeTimeFormat(locale, {
@@ -168,18 +165,28 @@ const TimeAgo = memo(
       [formatter, hideSeconds, pastSecondsText, futureSecondsText]
     );
 
-    const doUpdate = useCallback(() => {
+    const getValues = useCallback(() => {
       const [value, newUnit] = timeSince(
         dateObject,
         roundStrategy,
         allowFuture
       );
-      setText(formatDate(value, newUnit));
-      setUnit(newUnit);
+      return {
+        text: formatDate(value, newUnit),
+        unit: newUnit,
+      };
+    }, [dateObject, roundStrategy, allowFuture, formatDate]);
+
+    const [text, setText] = useState<string>(() => getValues().text);
+    const [unit, setUnit] = useState<Unit>(() => getValues().unit);
+
+    const doUpdate = useCallback(() => {
+      setText(getValues().text);
+      setUnit(getValues().unit);
       // setUnit is auto-batched with the previous setState,
       // in react 18+, and auto-aborted if this would be a
       // no-op in all react versions.
-    }, [dateObject, roundStrategy, allowFuture, formatDate]);
+    }, [getValues]);
 
     useEffect(doUpdate, [doUpdate]);
 
