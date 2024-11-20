@@ -1,13 +1,9 @@
 import { assert, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import TimeAgo, {
-  type TimeAgoOptions,
-  type TimeAgoProps,
-  TimeAgoProvider,
-} from "../index.js";
+import TimeAgo, { TimeAgoProvider } from "../index.js";
 
-function setup(props: TimeAgoProps) {
+function setup(props: TimeAgo.Props) {
   render(
     <div role="main">
       <TimeAgo {...props} />
@@ -223,8 +219,8 @@ describe("TimeAgo", () => {
 
 describe("TimeAgoProvider", () => {
   function setupWithProvider(
-    props: TimeAgoProps,
-    providerProps: TimeAgoOptions
+    props: TimeAgo.Props,
+    providerProps: TimeAgo.Options
   ) {
     render(
       <TimeAgoProvider {...providerProps}>
