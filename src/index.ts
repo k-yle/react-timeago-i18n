@@ -2,11 +2,14 @@ import {
   PropsWithChildren,
   createContext,
   createElement,
+  forwardRef,
   memo,
   useCallback,
   useContext,
   useEffect,
+  useImperativeHandle,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -45,6 +48,11 @@ function timeSince(
 }
 
 namespace TimeAgo {
+  export type Ref = {
+    /** @internal */
+    renderCount: React.MutableRefObject<number>;
+  };
+
   export type Props = {
     date: Date | string;
     /** the language to use */
@@ -104,9 +112,15 @@ export const TimeAgoProvider: React.FC<TimeAgo.Options & PropsWithChildren> = ({
   ...props
 }) => createElement(Context.Provider, { value: props }, children);
 
-const TimeAgo = memo<TimeAgo.Props>(
-  //
-  (props) => {
+const TimeAgo = memo(
+  forwardRef<TimeAgo.Ref, TimeAgo.Props>((props, ref) => {
+    // This exists purely for performance-related unit tests. The
+    // ref is available at runtime in production, but hidden from
+    // the type-definitions because it's not a documented feature.
+    const renderCount = useRef(0);
+    renderCount.current++;
+    useImperativeHandle(ref, () => ({ renderCount }), []);
+
     const {
       date,
       locale = navigator.language,
@@ -188,7 +202,7 @@ const TimeAgo = memo<TimeAgo.Props>(
           text
         )
       : text;
-  }
+  })
 );
 TimeAgo.displayName = "TimeAgo";
 

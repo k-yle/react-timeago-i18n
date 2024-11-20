@@ -1,15 +1,17 @@
+import { createRef } from "react";
 import { assert, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import TimeAgo, { TimeAgoProvider } from "../index.js";
 
 function setup(props: TimeAgo.Props) {
+  const ref = createRef<TimeAgo.Ref>();
   render(
     <div role="main">
-      <TimeAgo {...props} />
+      <TimeAgo {...props} ref={ref} />
     </div>
   );
-  return screen.getByRole("main");
+  return Object.assign(screen.getByRole("main"), { ref });
 }
 
 describe("TimeAgo", () => {
@@ -214,6 +216,71 @@ describe("TimeAgo", () => {
         expect(element.dateTime).toBe(isoDate);
       }
     );
+  });
+
+  describe("performance & render lifecycle", () => {
+    it("only renders once (i.e. with no re-renders)", () => {
+      const { ref } = setup({ date: "2023-01-14" });
+      expect(screen.getByRole("main")).toHaveTextContent("5 months ago");
+
+      // once only - useEffects did not trigger another render
+      expect(ref.current?.renderCount.current).toBe(2); // TODO: reduce by 1
+    });
+
+    it("re-renders as time progresses, using minimal re-renders", async () => {
+      const { ref } = setup({
+        date: new Date().toISOString(),
+        hideSeconds: false,
+      });
+      expect(screen.getByRole("main")).toHaveTextContent("now");
+      // only 1 render during the initialisation phase
+      expect(ref.current?.renderCount.current).toBe(2); // TODO: reduce by 1
+
+      // jump forward 1 second
+      await vi.advanceTimersByTimeAsync(1000);
+
+      expect(screen.getByRole("main")).toHaveTextContent("1 second ago");
+      // 1 new render
+      expect(ref.current?.renderCount.current).toBe(3); // TODO: reduce by 1
+
+      // jump forward 5 seconds
+      await vi.advanceTimersByTimeAsync(5000);
+
+      expect(screen.getByRole("main")).toHaveTextContent("6 seconds ago");
+      // 5 new renders
+      expect(ref.current?.renderCount.current).toBe(8); // TODO: reduce by 1
+    });
+
+    it("does not re-render if the date is unchanged", async () => {
+      const { ref } = setup({
+        date: "2019-01-14",
+        hideSeconds: false,
+      });
+      expect(screen.getByRole("main")).toHaveTextContent("4 years ago");
+      // only 1 render during the initialisation phase
+      expect(ref.current?.renderCount.current).toBe(2); // TODO: reduce by 1
+
+      // jump forward 1 second
+      await vi.advanceTimersByTimeAsync(1000);
+
+      expect(screen.getByRole("main")).toHaveTextContent("4 years ago");
+      // 1 new render, unclear why
+      expect(ref.current?.renderCount.current).toBe(3); // TODO: reduce by 1
+
+      // jump forward 5 seconds
+      await vi.advanceTimersByTimeAsync(5000);
+
+      expect(screen.getByRole("main")).toHaveTextContent("4 years ago");
+      // no new renders
+      expect(ref.current?.renderCount.current).toBe(3); // TODO: reduce by 1
+
+      // jump forward 10 seconds
+      await vi.advanceTimersByTimeAsync(10_000);
+
+      expect(screen.getByRole("main")).toHaveTextContent("4 years ago");
+      // no new renders
+      expect(ref.current?.renderCount.current).toBe(3); // TODO: reduce by 1
+    });
   });
 });
 

@@ -5,6 +5,7 @@
     "declaration": true,
     "skipLibCheck": true,
     "jsx": "react-jsx",
+    "stripInternal": true,
 
     // this is an esm-only package
     "module": "node16",
