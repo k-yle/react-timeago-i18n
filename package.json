@@ -1,6 +1,6 @@
 {
   "name": "react-timeago-i18n",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "author": "Kyle Hensel",
   "license": "MIT",
   "description": "📅🌏 A relative time component for react using the browser's native internationalization API",
@@ -21,7 +21,7 @@
     "internationalization"
   ],
   "scripts": {
-    "build": "tsc && uglifyjs -cmo dist/index.js dist/index.js",
+    "build": "tsc && uglifyjs -cmo dist/index.js dist/index.js && rm -rf ./dist/__tests__",
     "lint": "eslint --ext .js,.ts,.jsx,.tsx --ignore-path .gitignore .",
     "test": "vitest",
     "trypublish": "npm publish --provenance || true"
