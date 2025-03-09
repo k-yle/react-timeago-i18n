@@ -41,6 +41,9 @@ describe("TimeAgo", () => {
       ${"2023-06-06T10:00:00Z"} | ${"zh-Hans"} | ${"1小时前"}
       ${"1989-09-01"}           | ${"sm"}      | ${"34 years ago" /* lang not supported */}
       ${"1989-09-01"}           | ${"rrm"}     | ${"34 years ago" /* lang not supported */}
+      ${1686049200000}          | ${"en"}      | ${"now"}
+      ${1686049100000}          | ${"en"}      | ${"2 minutes ago"}
+      ${0}                      | ${"en"}      | ${"53 years ago"}
     `(
       "renders $date as $output in $locale",
       async ({ date, locale, output }) => {

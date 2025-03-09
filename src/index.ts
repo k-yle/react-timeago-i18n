@@ -54,7 +54,7 @@ namespace TimeAgo {
   };
 
   export type Props = {
-    date: Date | string;
+    date: Date | string | number;
     /** the language to use */
     locale?: string | string[];
     /** options for {@link Intl.RelativeTimeFormat} */
