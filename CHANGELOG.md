@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Support passing `string[]` to the `locale` option.
+
 ## 2.3.0 (2024-11-22)
 
 - Use a TypeScript namespace for all type defintions

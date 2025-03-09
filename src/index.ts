@@ -56,7 +56,7 @@ namespace TimeAgo {
   export type Props = {
     date: Date | string;
     /** the language to use */
-    locale?: string;
+    locale?: string | string[];
     /** options for {@link Intl.RelativeTimeFormat} */
     formatOptions?: Intl.RelativeTimeFormatOptions;
     /**
@@ -123,7 +123,7 @@ const TimeAgo = memo(
 
     const {
       date,
-      locale = navigator.language,
+      locale = navigator.languages,
       formatOptions,
       allowFuture = false,
       hideSeconds = true,
